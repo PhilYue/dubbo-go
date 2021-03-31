@@ -187,9 +187,12 @@ func (dir *RegistryDirectory) refreshAllInvokers(events []*registry.ServiceEvent
 		// loop the updateEvents
 		for _, event := range addEvents {
 			logger.Debugf("registry update, result{%s}", event)
-			logger.Infof("selector add service url{%s}", event.Service)
-			// FIXME: routers are built in every address notification?
-			dir.configRouters()
+			if event.Service != nil {
+				logger.Infof("selector add service url{%s}", event.Service.String())
+			}
+			if event != nil && event.Service != nil && constant.ROUTER_PROTOCOL == event.Service.Protocol {
+				dir.configRouters()
+			}
 			if oldInvoker, _ := dir.doCacheInvoker(event.Service); oldInvoker != nil {
 				oldInvokers = append(oldInvokers, oldInvoker)
 			}
@@ -241,8 +244,9 @@ func (dir *RegistryDirectory) cacheInvokerByEvent(event *registry.ServiceEvent) 
 		switch event.Action {
 		case remoting.EventTypeAdd, remoting.EventTypeUpdate:
 			logger.Infof("selector add service url{%s}", event.Service)
-			// FIXME: routers are built in every address notification?
-			dir.configRouters()
+			if u != nil && constant.ROUTER_PROTOCOL == u.Protocol {
+				dir.configRouters()
+			}
 			return dir.cacheInvoker(u), nil
 		case remoting.EventTypeDel:
 			logger.Infof("selector delete service url{%s}", event.Service)
@@ -326,6 +330,7 @@ func (dir *RegistryDirectory) uncacheInvoker(url *common.URL) protocol.Invoker {
 
 func (dir *RegistryDirectory) uncacheInvokerWithKey(key string) protocol.Invoker {
 	logger.Debugf("service will be deleted in cache invokers: invokers key is  %s!", key)
+	protocol.RemoveUrlKeyUnhealthyStatus(key)
 	if cacheInvoker, ok := dir.cacheInvokersMap.Load(key); ok {
 		dir.cacheInvokersMap.Delete(key)
 		return cacheInvoker.(protocol.Invoker)
