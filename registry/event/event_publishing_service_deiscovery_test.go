@@ -30,17 +30,16 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/common/extension"
-	"github.com/apache/dubbo-go/common/observer"
-	dispatcher2 "github.com/apache/dubbo-go/common/observer/dispatcher"
-	"github.com/apache/dubbo-go/config"
-	"github.com/apache/dubbo-go/metadata/mapping"
-	_ "github.com/apache/dubbo-go/metadata/service/inmemory"
-	"github.com/apache/dubbo-go/registry"
+	"dubbo.apache.org/dubbo-go/v3/common/extension"
+	"dubbo.apache.org/dubbo-go/v3/common/observer"
+	dispatcher2 "dubbo.apache.org/dubbo-go/v3/common/observer/dispatcher"
+	"dubbo.apache.org/dubbo-go/v3/config"
+	"dubbo.apache.org/dubbo-go/v3/metadata/mapping"
+	_ "dubbo.apache.org/dubbo-go/v3/metadata/service/inmemory"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
 func TestEventPublishingServiceDiscovery_DispatchEvent(t *testing.T) {
-
 	// extension.SetMetadataService("local", inmemory.NewMetadataService)
 
 	config.GetApplicationConfig().MetadataType = "local"
@@ -66,10 +65,9 @@ func TestEventPublishingServiceDiscovery_DispatchEvent(t *testing.T) {
 	extension.SetAndInitGlobalDispatcher("direct")
 	err := dc.Destroy()
 	assert.Nil(t, err)
-	si := &registry.DefaultServiceInstance{Id: "testServiceInstance"}
+	si := &registry.DefaultServiceInstance{ID: "testServiceInstance"}
 	err = dc.Register(si)
 	assert.Nil(t, err)
-
 }
 
 type TestServiceDiscoveryDestroyingEventListener struct {
@@ -101,7 +99,7 @@ type TestServiceInstancePreRegisteredEventListener struct {
 func (tel *TestServiceInstancePreRegisteredEventListener) OnEvent(e observer.Event) error {
 	e1, ok := e.(*ServiceInstancePreRegisteredEvent)
 	assert.Equal(tel.T(), ok, true)
-	assert.Equal(tel.T(), "testServiceInstance", e1.getServiceInstance().GetId())
+	assert.Equal(tel.T(), "testServiceInstance", e1.getServiceInstance().GetID())
 	return nil
 }
 
@@ -113,8 +111,7 @@ func (tel *TestServiceInstancePreRegisteredEventListener) GetEventType() reflect
 	return reflect.TypeOf(ServiceInstancePreRegisteredEvent{})
 }
 
-type ServiceDiscoveryA struct {
-}
+type ServiceDiscoveryA struct{}
 
 // String return mockServiceDiscovery
 func (msd *ServiceDiscoveryA) String() string {
@@ -162,7 +159,7 @@ func (msd *ServiceDiscoveryA) GetRequestInstances(serviceNames []string, offset 
 	return nil
 }
 
-func (msd *ServiceDiscoveryA) AddListener(listener *registry.ServiceInstancesChangedListener) error {
+func (msd *ServiceDiscoveryA) AddListener(listener registry.ServiceInstancesChangedListener) error {
 	return nil
 }
 
@@ -178,8 +175,7 @@ func (msd *ServiceDiscoveryA) DispatchEvent(event *registry.ServiceInstancesChan
 	return nil
 }
 
-type mockServiceNameMapping struct {
-}
+type mockServiceNameMapping struct{}
 
 func (m *mockServiceNameMapping) Map(serviceInterface string, group string, version string, protocol string) error {
 	return nil

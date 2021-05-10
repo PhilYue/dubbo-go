@@ -18,15 +18,14 @@
 package dispatcher
 
 import (
-	"github.com/apache/dubbo-go/common/observer"
+	"dubbo.apache.org/dubbo-go/v3/common/observer"
 )
 
 // MockEventDispatcher will do nothing.
 // It is only used by tests
 // Now the implementation doing nothing,
 // But you can modify this if needed
-type MockEventDispatcher struct {
-}
+type MockEventDispatcher struct{}
 
 // AddEventListener do nothing
 func (m MockEventDispatcher) AddEventListener(listener observer.EventListener) {

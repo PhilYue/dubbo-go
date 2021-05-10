@@ -23,9 +23,9 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/cluster"
-	"github.com/apache/dubbo-go/common/constant"
-	"github.com/apache/dubbo-go/protocol"
+	"dubbo.apache.org/dubbo-go/v3/cluster"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/protocol"
 )
 
 // When there're more than one registry for subscription.
@@ -80,7 +80,7 @@ func (invoker *zoneAwareClusterInvoker) DoInvoke(ctx context.Context, invocation
 			return &protocol.RPCResult{
 				Err: fmt.Errorf("no registry instance in zone or "+
 					"no available providers in the registry, zone: %v, "+
-					" registries: %v", zone, invoker.GetUrl()),
+					" registries: %v", zone, invoker.GetURL()),
 			}
 		}
 	}
@@ -125,9 +125,8 @@ func (invoker *zoneAwareClusterInvoker) BeforeInvoker(ctx context.Context, invoc
 }
 
 func (invoker *zoneAwareClusterInvoker) AfterInvoker(ctx context.Context, invocation protocol.Invocation) {
-
 }
 
 func matchParam(target, key, def string, invoker protocol.Invoker) bool {
-	return target == invoker.GetUrl().GetParam(key, def)
+	return target == invoker.GetURL().GetParam(key, def)
 }

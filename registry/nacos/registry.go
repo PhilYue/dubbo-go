@@ -34,16 +34,14 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/common"
-	"github.com/apache/dubbo-go/common/constant"
-	"github.com/apache/dubbo-go/common/extension"
-	"github.com/apache/dubbo-go/common/logger"
-	"github.com/apache/dubbo-go/registry"
+	"dubbo.apache.org/dubbo-go/v3/common"
+	"dubbo.apache.org/dubbo-go/v3/common/constant"
+	"dubbo.apache.org/dubbo-go/v3/common/extension"
+	"dubbo.apache.org/dubbo-go/v3/common/logger"
+	"dubbo.apache.org/dubbo-go/v3/registry"
 )
 
-var (
-	localIP = ""
-)
+var localIP = ""
 
 const (
 	// RegistryConnDelay registry connection delay
@@ -214,8 +212,8 @@ func (nr *nacosRegistry) UnSubscribe(url *common.URL, notifyListener registry.No
 	return perrors.New("UnSubscribe not support in nacosRegistry")
 }
 
-// GetUrl gets its registration URL
-func (nr *nacosRegistry) GetUrl() *common.URL {
+// GetURL gets its registration URL
+func (nr *nacosRegistry) GetURL() *common.URL {
 	return nr.URL
 }
 
@@ -293,7 +291,7 @@ func getNacosConfig(url *common.URL) (map[string]interface{}, error) {
 	clientConfig.Endpoint = url.GetParam(constant.NACOS_ENDPOINT, "")
 	clientConfig.NamespaceId = url.GetParam(constant.NACOS_NAMESPACE_ID, "")
 
-	//enable local cache when nacos can not connect.
+	// enable local cache when nacos can not connect.
 	notLoadCache, err := strconv.ParseBool(url.GetParam(constant.NACOS_NOT_LOAD_LOCAL_CACHE, "false"))
 	if err != nil {
 		logger.Errorf("ParseBool - error: %v", err)

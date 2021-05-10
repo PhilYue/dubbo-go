@@ -32,9 +32,9 @@ import (
 )
 
 import (
-	"github.com/apache/dubbo-go/common"
-	"github.com/apache/dubbo-go/config_center"
-	"github.com/apache/dubbo-go/config_center/parser"
+	"dubbo.apache.org/dubbo-go/v3/common"
+	"dubbo.apache.org/dubbo-go/v3/config_center"
+	"dubbo.apache.org/dubbo-go/v3/config_center/parser"
 )
 
 // run mock config server
@@ -117,7 +117,6 @@ func TestNacosDynamicConfiguration_GetConfigKeysByGroup(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, 1, configs.Size())
 	assert.True(t, configs.Contains("application"))
-
 }
 
 func TestNacosDynamicConfigurationPublishConfig(t *testing.T) {
@@ -139,7 +138,7 @@ func TestAddListener(t *testing.T) {
 }
 
 func TestRemoveListener(_ *testing.T) {
-	//TODO not supported in current go_nacos_sdk version
+	// TODO not supported in current go_nacos_sdk version
 }
 
 type mockDataListener struct {
